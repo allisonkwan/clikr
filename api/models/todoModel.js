@@ -15,10 +15,14 @@
             type:String,
             required:true,
         },
+        clickSequence: [{
+            type:String,
+            required:true,
+        }],
         createdOn: {
             type:Date,
             default:Date.now,
-        }
+        },
     });
 
 // create and export model
