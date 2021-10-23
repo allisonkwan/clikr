@@ -2,7 +2,6 @@
 
 // require express and bodyParser
 const express = require('express');
-//const bodyParser = require('body-parser');
 
 // Import DB Connection
 require("./config/db");
@@ -20,9 +19,6 @@ routes(app);
 
 // define port to run express app
 const port = process.env.PORT || 3000;
-
-
-
 
 // Add endpoint
 app.get('/', (req, res) => {
