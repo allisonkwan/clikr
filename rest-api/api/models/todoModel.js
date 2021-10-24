@@ -15,10 +15,10 @@
             type:String,
             required:true,
         },
-        clickSequence: [{
+        clickSequence: {
             type:String,
             required:true,
-        }],
+        },
         createdOn: {
             type:Date,
             default:Date.now,
