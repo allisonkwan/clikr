@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+    padding: 5%;
+    
+}
+input {
+    margin: 2%;
+    width: 200px;
+}
+p, label {
+    font-size: 1.5em;
+}
+#url {
+    color: #0045b5;
+}

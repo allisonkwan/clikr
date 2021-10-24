@@ -1,0 +1,42 @@
+{
+  "name": "Clikr",
+  "description": "Automate click sequences",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts" : [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": ["content/content.css"],
+      "js": ["content/content.js"],
+      "exclude_matches": [
+        "https://www.google.com/*"
+      ]
+    }
+  ],
+  "permissions": ["storage", "tabs", "notifications", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "/images/clickr_16.png",
+      "32": "/images/clickr_24.png",
+      "48": "/images/clickr_48.png",
+      "128": "/images/clickr_128.png"
+    }
+  },
+  "icons": {
+    "16": "/images/clickr_16.png",
+    "32": "/images/clickr_24.png",
+    "48": "/images/clickr_48.png",
+    "128": "/images/clickr_128.png"
+  },
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"],
+    "resources": ["/images/up_arrow.png"]
+  }],
+  "options_page": "extension-pages/options.html"
+}
