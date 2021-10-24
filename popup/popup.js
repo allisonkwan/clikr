@@ -5,31 +5,22 @@ chrome.storage.sync.get("userMode", ({ userMode }) => {
     document.getElementById("radiodiv").style.display = "none";
 
   } else {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      console.log(tabs);
-      var url = tabs[0].url;
-      console.log(url);
-      // use url to get list of actions from database.
-      var actions = ["test1", "test2", "test3"];
-      // we can also get click sequence for all actions in a global var here...
-
-      if (actions.length > 0) {
-        constructOptions(actions);
-        document.getElementById("text").innerHTML = "Click the button to start click sequence."
-        document.getElementById("buttons").style.display = "block";
-        document.getElementById("radiodiv").style.display = "block";
-        chrome.storage.sync.get("navType", ({navType}) => {
-            if (navType == "guided") {
-              document.getElementById('guided').checked = true;
-            } else {
-              document.getElementById('auto').checked = true;
-            }
-        });
-
-      } else {
-        document.getElementById("text").innerHTML = "Data insufficient for actions on this page."
-      }
-    });
+    chrome.runtime.sendMessage(
+      {
+          contentScriptQuery: "getdata"
+          // , data: JSONdata
+          , url: "http://localhost:3000/todos"
+      }, function (response) {
+          debugger;
+          if (response != undefined && response != "") {
+              callback(response);
+          }
+          else {
+              debugger;
+              callback(null);
+          }
+      });
+    
     // button.addEventListener("click", async () => {
     //   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     //   chrome.scripting.executeScript({
@@ -40,14 +31,14 @@ chrome.storage.sync.get("userMode", ({ userMode }) => {
   }
 });
 
-document.getElementById('guided').addEventListener("click", radioSelect); 
-document.getElementById('auto').addEventListener("click", radioSelect); 
+document.getElementById("guided").addEventListener("click", radioSelect); 
+document.getElementById("auto").addEventListener("click", radioSelect); 
 
 
 function radioSelect(event) {
   console.log(event.target);
   if (event.target.checked) {
-    chrome.storage.sync.set({'navType' : event.target.value});
+    chrome.storage.sync.set({"navType" : event.target.value});
     console.log(event.target.value);
   }
 }
@@ -132,3 +123,43 @@ chrome.runtime.sendMessage({action: "background script get clicks", elements : c
   //     {action: "execute clicks", sequence: clickSequence});
   // });
 }
+
+function callback(p) {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    console.log(tabs);
+    var url = tabs[0].url;
+    console.log(url);
+    var data = JSON.parse(p);
+    console.log(p);
+    console.log(data);
+    console.log(data[4].clickSequence);
+    data[4].clickSequence = JSON.parse("["+data[4].clickSequence+"]");
+
+    url = "https://cuberule.com/";
+    //parsing
+    for (var i = 0; i < data.length; i++){
+      if (data[i].websiteUrl != url){
+        data.splice(i, 1);
+      }
+    }
+    console.log(data);
+    var actions = ["a"];
+    if (actions.length > 0) {
+      constructOptions(actions);
+      document.getElementById("text").innerHTML = "Click the button to start click sequence."
+      document.getElementById("buttons").style.display = "block";
+      document.getElementById("radiodiv").style.display = "block";
+      chrome.storage.sync.get("navType", ({navType}) => {
+          if (navType == "guided") {
+            document.getElementById("guided").checked = true;
+          } else {
+            document.getElementById("auto").checked = true;
+          }
+      });
+  
+    } else {
+      document.getElementById("text").innerHTML = "Data insufficient for actions on this page."
+    }
+  });
+}
+

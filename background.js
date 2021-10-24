@@ -106,6 +106,33 @@ chrome.runtime.onMessage.addListener(
     }
   });
 
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {    
+    if (request.contentScriptQuery == "getdata") {
+        //var url = request.url;
+        var url = "http://localhost:3000/todos";
+        fetch(url)
+            .then(response => response.text())
+            .then(response => sendResponse(response))
+            .catch()
+        return true;
+    }
+    if (request.contentScriptQuery == "postData") {
+        fetch(request.url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: 'result=' + request.data
+        })
+            .then(response => response.json())
+            .then(response => sendResponse(response))
+            .then(console.log('sent post'))
+            .catch(error => console.log('Error:', error));
+        return true;
+    }
+});
+
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.action == "send content script more") {

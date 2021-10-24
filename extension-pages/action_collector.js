@@ -12,7 +12,34 @@ document.addEventListener('click', function(e) {
             console.log(cs);
             console.log(action);
             console.log(cs[0].baseURI);
-            document.getElementById("url").innerHTML = cs[0].baseURI;
+            var jsonData = JSON.stringify(
+                {
+                    "websiteUrl" : cs[0].baseURI,
+                    "userActionType" : action,
+                    "clickSequence" : cs
+                }
+            )
+            console.log(jsonData);
+            chrome.runtime.sendMessage(
+                {
+                    contentScriptQuery: "postData"
+                    , data: {
+                        "websiteUrl" : cs[0].baseURI,
+                        "userActionType" : action,
+                        "clickSequence" : cs
+                    }
+                    , url: "http://localhost:3000/todos"
+                }, function (response) {
+                    debugger;
+                    if (response != undefined && response != "") {
+                        // callback(response);
+                        console.log(response);
+                    }
+                    else {
+                        debugger;
+                        // callback(null);
+                    }
+                });
             chrome.storage.local.set({ 'clickSequence' : [] }); // clear local clicksequence
         });
     }

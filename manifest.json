@@ -19,6 +19,7 @@
     }
   ],
   "permissions": ["storage", "tabs", "notifications", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost:3000/*"],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
