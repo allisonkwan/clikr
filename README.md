@@ -1,4 +1,6 @@
 # Clikr
+![Guided Navigation](/images/guided_navigation.jpg)
+![Tooltip](/images/tooltip.jpg)
 ## Overview
 Clikr is a Google Chrome extension that aids users in navigating the web. On one side, contributors (technologically-savvy individuals) opt in to have the tool collect data their site navigation and input data so that common user click sequences and inputs are stored in a database. On the other, users (those who have difficulty navigating the web) choose a keyword relating to their site needs. This keyword is mapped to web elements and navigates the user to their desired site page automatically by outputting a common click sequence relating to the keyword.
 ## Functionality
